@@ -1,15 +1,24 @@
 import io
+import os
 import sys
 import base64
 
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask import request
 from google.cloud import vision
 
+PROD = os.environ['FLASK_ENV'] == 'prod'
 BASE_64_TAG = ';base64,'
 
-app = Flask(__name__)
+if PROD:
+    app = Flask(__name__, static_folder='../public_html', static_url_path='')
+else:
+    app = Flask(__name__)
 
+@app.route('/secret')
+def secret():
+    return "nguoi yeu cua loan yeu loan lam co biet ko"
+    
 @app.route('/detect_logos', methods=['POST'])
 def detect_logos():
     data = request.json
@@ -46,3 +55,12 @@ def check_for_error(response):
             'https://cloud.google.com/apis/design/errors'.format(response.error.message))
         return True    
     return False
+
+@app.route('/')
+def serve():
+    if PROD:
+        return send_from_directory(app.static_folder, 'index.html')
+    return 'Not in production'
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
