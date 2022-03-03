@@ -14,10 +14,6 @@ if PROD:
     app = Flask(__name__, static_folder='../public_html', static_url_path='')
 else:
     app = Flask(__name__)
-
-@app.route('/secret')
-def secret():
-    return "nguoi yeu cua loan yeu loan lam co biet ko"
     
 @app.route('/detect_logos', methods=['POST'])
 def detect_logos():
@@ -31,7 +27,7 @@ def preprocess_image_str(image_str):
     return image_str[i:]
 
 def detect_logos_from_google(content):
-    client = vision.ImageAnnotatorClient()
+    client = vision.ImageAnnotatorClient() 
     image = vision.Image(content=content)
 
     response = client.logo_detection(image=image)
