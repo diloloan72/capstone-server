@@ -11,7 +11,7 @@ PROD = os.environ['FLASK_ENV'] == 'prod'
 BASE_64_TAG = ';base64,'
 
 if PROD:
-    app = Flask(__name__, static_folder='../app/build', static_url_path='')
+    app = Flask(__name__, static_folder='frontend', static_url_path='')
 else:
     app = Flask(__name__)
     
